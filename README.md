@@ -44,10 +44,4 @@ Make sure to adjust the query if your database schema or naming conventions diff
 
 This project assumes a MySQL-compatible database. Adjustments may be necessary for compatibility with other database systems.
 
-## **Contributors**
-
-- [Your Name]
-
-Feel free to contribute by forking the repository and submitting pull requests with improvements or additional features. Issues can be reported on the GitHub repository for bug fixes or enhancements.
-
 Happy analyzing!

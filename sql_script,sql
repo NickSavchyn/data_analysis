@@ -1,0 +1,33 @@
+-- sql_script.sql
+
+SELECT
+    s.pipeline,
+    d.product,
+    s.stage_label,
+    DATE_FORMAT(d.created_at, '%Y-%m') AS created_year_and_month,
+    c.email,
+    c.country,
+    c.city,
+    CONCAT(c.first_name, ' ', c.last_name) AS full_name,
+    COUNT(e.type = 'call' OR NULL) AS calls_number,
+    AVG(CASE WHEN e.type = 'call' THEN e.duration_sec END) AS mean_calls_duration_sec,
+    AVG(DATEDIFF(e.created_at, d.created_at)) AS days_to_meet
+FROM
+    Stages s
+JOIN
+    Deals d ON s.object_id = d.object_id
+JOIN
+    Contacts c ON d.object_id IN (SELECT to FROM Associations WHERE type = 'deal_contact' AND from = d.object_id)
+JOIN
+    Engagements e ON d.object_id IN (SELECT to FROM Associations WHERE type = 'deal_engagement' AND from = d.object_id) AND e.is_deleted = 0
+WHERE
+    d.is_deleted = 0
+GROUP BY
+    s.pipeline,
+    d.product,
+    s.stage_label,
+    created_year_and_month,
+    c.email,
+    c.country,
+    c.city,
+    full_name;
